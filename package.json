@@ -9,7 +9,8 @@
   "publisher": "omkarmoghe",
   "license": "See license in LICENSE.",
   "categories": [
-    // TODO(@omkarmoghe)
+    "Programming Languages",
+    "Language Packs"
   ],
   "keywords": [
     "csv",
@@ -18,14 +19,27 @@
     "table",
     "comma"
   ],
-  "icon": "images/icon.png", // TODO(@omkarmoghe)
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/omkarmoghe/Clay-CSV.git"
   },
   "activationEvents": [],
   "main": "./out/extension.js",
-  "contributes": {},
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "clayCSV.tableView",
+        "displayName": "CSV Table View",
+        "selector": [
+          {
+            "filenamePattern": "*.cscratch"
+          }
+        ],
+        "priority": "option"
+      }
+    ]
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
@@ -37,7 +51,7 @@
   "devDependencies": {
     "@types/vscode": "^1.84.0",
     "@types/mocha": "^10.0.3",
-    "@types/node": "18.x",
+    "@types/node": "^20.0",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.52.0",
