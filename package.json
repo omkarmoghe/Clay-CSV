@@ -33,7 +33,7 @@
         "displayName": "CSV Table View",
         "selector": [
           {
-            "filenamePattern": "*.cscratch"
+            "filenamePattern": "*.csv"
           }
         ],
         "priority": "option"
