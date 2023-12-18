@@ -50,13 +50,12 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 
   buildHTMLForWebview(webview: vscode.Webview): string {
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "editors", "tableViewEditor.js")
+      vscode.Uri.joinPath(this.context.extensionUri, "out", "editors", "tableViewEditor.js")
     );
     const styleUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "styles", "tableViewEditor.css")
+      vscode.Uri.joinPath(this.context.extensionUri, "src", "styles", "tableViewEditor.css")
     );
     const scriptNonce = nonce();
-    debugger;
 
     return /* html */`
 			<!DOCTYPE html>
@@ -64,6 +63,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 			<head>
 				<meta charset="UTF-8">
 
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource}; style-src ${webview.cspSource}; script-src 'nonce-${scriptNonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 				<link href="${styleUri}" rel="stylesheet" />
@@ -73,8 +73,8 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         <div id="control"/>
 				<div id="table"/>
 
-        <script nonce="${scriptNonce}" src="${scriptUri}"></script>
-        <script nonce="${scriptNonce}">tableViewEditor();</script>
+        <script type="application/javascript" nonce="${scriptNonce}" src="${scriptUri}"></script>
+        <script type="application/javascript" nonce="${scriptNonce}">tableViewEditor();</script>
 			</body>
 			</html>`;
   }

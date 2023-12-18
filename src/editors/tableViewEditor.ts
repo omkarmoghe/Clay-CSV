@@ -12,12 +12,11 @@ export default function tableViewEditor() {
   window.addEventListener("message", event => {
     const message: Message = event.data;
 
-    debugger;
     switch (message.type) {
       case "init":
         const initMessage = message as InitMessage;
 
-        if (tableContainer) {
+        if (tableContainer && table) {
           tableContainer.textContent = initMessage.text;
         }
         return;
@@ -27,5 +26,3 @@ export default function tableViewEditor() {
     }
   });
 }
-
-tableViewEditor();
