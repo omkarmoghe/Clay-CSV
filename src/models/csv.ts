@@ -5,5 +5,6 @@ export interface Cell {
 }
 
 export interface Row {
-
+  index: number;
+  cells: Cell[];
 }

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { nonce } from '../util';
+import { nonce, parseCsv } from '../util';
 import { InitMessage } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
@@ -35,7 +35,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 
     webviewPanel.webview.postMessage({
       type: "init",
-      text: document.getText()
+      rows: parseCsv(document.getText())
     });
   }
 
@@ -69,7 +69,6 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 				<link href="${styleUri}" rel="stylesheet" />
       </head>
       <body>
-        <h1>FUCK YA</h1>
         <div id="control"/>
 				<div id="table"/>
 

@@ -1,17 +1,13 @@
+import { Cell, Row } from "./csv";
+
 export interface Message {
   type: string;
 }
 
 export interface InitMessage extends Message {
-  text: string;
-}
-
-export interface CellUpdate {
-  row: number;
-  col: number;
-  text: string;
+  rows: Row[];
 }
 
 export interface UpdateMessage extends Message {
-  updates: CellUpdate[];
+  updates: Cell[];
 }
