@@ -22,6 +22,14 @@ export default function tableViewEditor() {
       case "init":
         const initMessage = message as InitMessage;
 
+        if (tableHeader) {
+          tableHeader.replaceChildren();
+        }
+
+        if (tableBody) {
+          tableBody.replaceChildren();
+        }
+
         if (tableContainer && table) {
           initMessage.rows.forEach((row) => {
             const tableRow = document.createElement("tr");

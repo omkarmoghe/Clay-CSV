@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { nonce, parseCsv } from '../util';
-import { CopyMessage, InitMessage } from '../models/messages';
+import { CopyMessage, Message } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
   static readonly VIEW_TYPE: string = "clayCSV.tableView";
@@ -25,20 +25,11 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 
     // Register document change listener
     const didChangeTextDocumentListener = vscode.workspace.onDidChangeTextDocument(event => {
-      this.onDidChangeTextDocument(document, event);
+      this.onDidChangeTextDocument(document, event, webviewPanel);
     });
     webviewPanel.onDidDispose(() => { didChangeTextDocumentListener.dispose(); });
 
-    webviewPanel.webview.onDidReceiveMessage(message => {
-      switch (message.type) {
-        case "copy":
-          const copyMessage = message as CopyMessage;
-
-          vscode.env.clipboard.writeText(copyMessage.text).then(() => {
-            vscode.window.showInformationMessage(`"${message.text}" copied to clipboard.`);
-          });
-      }
-    });
+    webviewPanel.webview.onDidReceiveMessage(this.messageHandler);
 
     webviewPanel.webview.postMessage({
       type: "init",
@@ -47,12 +38,20 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   // Document change listener
-  onDidChangeTextDocument(document: vscode.TextDocument, event: vscode.TextDocumentChangeEvent): void {
+  onDidChangeTextDocument(
+    document: vscode.TextDocument,
+    event: vscode.TextDocumentChangeEvent,
+    webviewPanel: vscode.WebviewPanel
+  ): void {
     if (event.document.uri.toString() !== document.uri.toString()) {
       return;
     }
 
-    console.dir(event.contentChanges);
+    // TODO(@omkarmoghe): Compute the minimum update and just send that to the webview.
+    webviewPanel.webview.postMessage({
+      type: "init",
+      rows: parseCsv(document.getText())
+    });
   }
 
   buildHTMLForWebview(webview: vscode.Webview): string {
@@ -83,5 +82,19 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         <script type="application/javascript" nonce="${scriptNonce}">tableViewEditor();</script>
 			</body>
 			</html>`;
+  }
+
+  messageHandler(message: Message) {
+    switch (message.type) {
+      case "copy":
+        const copyMessage = message as CopyMessage;
+
+        vscode.env.clipboard.writeText(copyMessage.text).then(() => {
+          vscode.window.showInformationMessage(`"${message.text}" copied to clipboard.`);
+        });
+        return;
+      default:
+        console.warn(`Unhandled message received from webview: ${message.type}`);
+    }
   }
 }
