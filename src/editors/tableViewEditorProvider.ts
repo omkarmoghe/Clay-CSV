@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { nonce, parseCsv } from '../util';
-import { InitMessage } from '../models/messages';
+import { CopyMessage, InitMessage } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
   static readonly VIEW_TYPE: string = "clayCSV.tableView";
@@ -29,8 +29,15 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     });
     webviewPanel.onDidDispose(() => { didChangeTextDocumentListener.dispose(); });
 
-    webviewPanel.webview.onDidReceiveMessage(event => {
-      console.dir(event);
+    webviewPanel.webview.onDidReceiveMessage(message => {
+      switch (message.type) {
+        case "copy":
+          const copyMessage = message as CopyMessage;
+
+          vscode.env.clipboard.writeText(copyMessage.text).then(() => {
+            vscode.window.showInformationMessage(`"${message.text}" copied to clipboard.`);
+          });
+      }
     });
 
     webviewPanel.webview.postMessage({

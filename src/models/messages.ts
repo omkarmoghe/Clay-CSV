@@ -11,3 +11,7 @@ export interface InitMessage extends Message {
 export interface UpdateMessage extends Message {
   updates: Cell[];
 }
+
+export interface CopyMessage extends Message {
+  text: string;
+}

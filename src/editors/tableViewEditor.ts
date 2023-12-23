@@ -1,8 +1,6 @@
 import { InitMessage, Message } from "../models/messages";
 
 export default function tableViewEditor() {
-  console.debug("Init editor script.");
-
   // @ts-ignore
   const vscode = acquireVsCodeApi();
 
@@ -31,6 +29,7 @@ export default function tableViewEditor() {
               const tableCell = cell.row === 0 ? document.createElement("th") : document.createElement("td");
               tableCell.id = `cell${cell.row}x${cell.col}`;
               tableCell.textContent = cell.text;
+              tableCell.addEventListener("click", (event) => onCellClick(event, vscode));
               tableRow.appendChild(tableCell);
             });
 
@@ -43,5 +42,13 @@ export default function tableViewEditor() {
       default:
         return;
     }
+  });
+}
+
+function onCellClick(event: MouseEvent, vscode: any) {
+  const tableCell = event.target as HTMLTableCellElement;
+  vscode.postMessage({
+    type: "copy",
+    text: tableCell.textContent
   });
 }

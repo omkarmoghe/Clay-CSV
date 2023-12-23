@@ -1,3 +1,32 @@
 .tbody {
   font-family: var(--vscode-editor-font-family);
 }
+
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px dotted var(--vscode-editor-foreground);
+  padding: 8px;
+}
+
+th:hover,
+td:hover {
+  color: var(--vscode-editor-background);
+  background-color: var(--vscode-editor-foreground);
+  cursor: pointer;
+}
+
+/* row stripes */
+/* tr:nth-child(even) {
+  color: var(--vscode-editor-background);
+  background-color: var(--vscode-editor-foreground);
+} */
+
+/* column stripes */
+/* td:nth-child(even),
+th:nth-child(even) {
+  background-color: #D6EEEE;
+} */
