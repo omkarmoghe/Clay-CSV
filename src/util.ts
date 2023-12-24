@@ -22,3 +22,17 @@ export async function parseCsv(text: string): Promise<Row[]> {
     };
   });
 }
+
+// TODO(@omkarmoghe): Figure this out
+// export function debounce(func: () => void, waitMilliseconds: number, runImmediately: boolean = false) {
+//   var timeout: number | null;
+//   return () => {
+//     const args = arguments;
+//     const funcLater = () => {
+//       timeout = null;
+//       if (!runImmediately) {
+//         func.apply(this, args);
+//       }
+//     };
+//   };
+// }

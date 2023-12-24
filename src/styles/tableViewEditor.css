@@ -1,9 +1,9 @@
-.tbody {
-  font-family: var(--vscode-editor-font-family);
-}
-
 table {
   border-collapse: collapse;
+}
+
+tbody {
+  font-family: var(--vscode-editor-font-family);
 }
 
 th,

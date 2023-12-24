@@ -99,11 +99,12 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         const copyMessage = message as CopyMessage;
 
         vscode.env.clipboard.writeText(copyMessage.text).then(() => {
-          vscode.window.showInformationMessage(`"${message.text}" copied to clipboard.`);
+          vscode.window.showInformationMessage(`"${copyMessage.text}" copied to clipboard.`);
         });
         return;
       default:
         console.warn(`Unhandled message received from webview: ${message.type}`);
+        return;
     }
   }
 }
