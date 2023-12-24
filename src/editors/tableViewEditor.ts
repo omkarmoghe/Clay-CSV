@@ -4,16 +4,14 @@ export default function tableViewEditor() {
   // @ts-ignore
   const vscode = acquireVsCodeApi();
 
-  const tableContainer = document.querySelector("#table");
+  const tableContainer = document.querySelector("#table-container");
 
   const table = document.createElement("table");
-  const tableHeader = table.appendChild(
-    document.createElement("thead")
-  );
-  const tableBody = table.appendChild(
-    document.createElement("tbody")
-  );
-  tableContainer?.appendChild(table);
+  const tableHeader = document.createElement("thead");
+  const tableBody = document.createElement("tbody");
+  table.replaceChildren(tableHeader, tableBody);
+
+  tableContainer?.replaceChildren(table);
 
   window.addEventListener("message", event => {
     const message: Message = event.data;

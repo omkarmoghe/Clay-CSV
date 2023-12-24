@@ -27,13 +27,20 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     const didChangeTextDocumentListener = vscode.workspace.onDidChangeTextDocument(event => {
       this.onDidChangeTextDocument(document, event, webviewPanel);
     });
-    webviewPanel.onDidDispose(() => { didChangeTextDocumentListener.dispose(); });
 
-    webviewPanel.webview.onDidReceiveMessage(this.messageHandler);
+    // Register message listener
+    const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.messageHandler);
 
-    webviewPanel.webview.postMessage({
-      type: "init",
-      rows: parseCsv(document.getText())
+    webviewPanel.onDidDispose(() => {
+      didChangeTextDocumentListener.dispose();
+      didReceiveMessageListener.dispose();
+    });
+
+    parseCsv(document.getText()).then((rows) => {
+      webviewPanel.webview.postMessage({
+        type: "init",
+        rows: rows
+      });
     });
   }
 
@@ -76,7 +83,9 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       </head>
       <body>
         <div id="control"/>
-				<div id="table"/>
+				<div id="table-container">
+          <span>Parsing CSV...</span>
+        </div>
 
         <script type="application/javascript" nonce="${scriptNonce}" src="${scriptUri}"></script>
         <script type="application/javascript" nonce="${scriptNonce}">tableViewEditor();</script>

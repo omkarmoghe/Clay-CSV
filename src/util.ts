@@ -6,7 +6,7 @@ export function nonce(): string {
   return crypto.randomBytes(24).toString("base64");
 }
 
-export function parseCsv(text: string): Row[] {
+export async function parseCsv(text: string): Promise<Row[]> {
   const stringRows: string[][] = syncParse(
     text,
     // {
