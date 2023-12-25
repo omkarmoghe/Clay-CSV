@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { nonce, parseCsv } from '../util';
+import { debounce, nonce, parseCsv } from '../util';
 import { CopyMessage, Message } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
@@ -24,9 +24,11 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     webviewPanel.webview.html = this.buildHTMLForWebview(webviewPanel.webview);
 
     // Register document change listener
-    const didChangeTextDocumentListener = vscode.workspace.onDidChangeTextDocument(event => {
-      this.onDidChangeTextDocument(document, event, webviewPanel);
-    });
+    const didChangeTextDocumentListener = vscode.workspace.onDidChangeTextDocument(
+      debounce((event: vscode.TextDocumentChangeEvent) => {
+        this.onDidChangeTextDocument(document, event, webviewPanel);
+      })
+    );
 
     // Register message listener
     const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.messageHandler);
@@ -55,9 +57,11 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     }
 
     // TODO(@omkarmoghe): Compute the minimum update and just send that to the webview.
-    webviewPanel.webview.postMessage({
-      type: "init",
-      rows: parseCsv(document.getText())
+    parseCsv(document.getText()).then((rows) => {
+      webviewPanel.webview.postMessage({
+        type: "init",
+        rows: rows
+      });
     });
   }
 
