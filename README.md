@@ -4,7 +4,10 @@ CSV tools for developers.
 ## Features
 
 ### Simple table view of data
-![Table view](/images/features/table-view.png)
+![Table view screenshot](/images/features/table-view.png)
 
 ### Click to copy
 ![Click to copy screenshot](/images/features/click-to-copy.png)
+
+### Sticky headers
+![Sticky headers screenshot](/images/features/sticky-headers.png)
