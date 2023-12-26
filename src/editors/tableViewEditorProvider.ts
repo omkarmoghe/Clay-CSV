@@ -14,7 +14,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   resolveCustomTextEditor(
     document: vscode.TextDocument,
     webviewPanel: vscode.WebviewPanel,
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): void | Thenable<void> {
     // Enable JS
     webviewPanel.webview.options = {
@@ -33,10 +33,15 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     // Register message listener
     const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.messageHandler);
 
-    webviewPanel.onDidDispose(() => {
-      didChangeTextDocumentListener.dispose();
-      didReceiveMessageListener.dispose();
-    });
+    webviewPanel.onDidDispose(
+      () => { },
+      null,
+      [
+        didChangeTextDocumentListener,
+        didReceiveMessageListener,
+        ...this.context.subscriptions
+      ]
+    );
 
     parseCsv(document.getText()).then((rows) => {
       webviewPanel.webview.postMessage({
@@ -92,6 +97,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         </div>
 
         <script type="application/javascript" nonce="${scriptNonce}" src="${scriptUri}"></script>
+        <script type="application/javascript">var exports = {};</script>
         <script type="application/javascript" nonce="${scriptNonce}">tableViewEditor();</script>
 			</body>
 			</html>`;
