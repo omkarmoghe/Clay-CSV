@@ -23,15 +23,20 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 
     webviewPanel.webview.html = this.buildHTMLForWebview(webviewPanel.webview);
 
-    // Register document change listener
+    // Text document change listener
     const didChangeTextDocumentListener = vscode.workspace.onDidChangeTextDocument(
       debounce((event: vscode.TextDocumentChangeEvent) => {
         this.onDidChangeTextDocument(document, event, webviewPanel);
       })
     );
-
-    // Register message listener
-    const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.messageHandler);
+    // Message listener (from the webview to the backend)
+    const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.onDidReceiveMessage);
+    // View state change listener
+    // const didChangeViewStateListener = webviewPanel.onDidChangeViewState(
+    //   (event: vscode.WebviewPanelOnDidChangeViewStateEvent) => {
+    //     this.onDidChangeViewState(event);
+    //   }
+    // );
 
     webviewPanel.onDidDispose(
       () => { },
@@ -39,16 +44,12 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       [
         didChangeTextDocumentListener,
         didReceiveMessageListener,
+        // didChangeViewStateListener,
         ...this.context.subscriptions
       ]
     );
 
-    parseCsv(document.getText()).then((rows) => {
-      webviewPanel.webview.postMessage({
-        type: "init",
-        rows: rows
-      });
-    });
+    this.initWebview(webviewPanel, document);
   }
 
   // Document change listener
@@ -62,12 +63,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     }
 
     // TODO(@omkarmoghe): Compute the minimum update and just send that to the webview.
-    parseCsv(document.getText()).then((rows) => {
-      webviewPanel.webview.postMessage({
-        type: "init",
-        rows: rows
-      });
-    });
+    this.initWebview(webviewPanel, document);
   }
 
   buildHTMLForWebview(webview: vscode.Webview): string {
@@ -96,14 +92,23 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
           <span>Parsing CSV...</span>
         </div>
 
+        <script type="application/javascript" nonce="${scriptNonce}">var exports = {};</script>
         <script type="application/javascript" nonce="${scriptNonce}" src="${scriptUri}"></script>
-        <script type="application/javascript">var exports = {};</script>
         <script type="application/javascript" nonce="${scriptNonce}">tableViewEditor();</script>
 			</body>
 			</html>`;
   }
 
-  messageHandler(message: Message) {
+  initWebview(webviewPanel: vscode.WebviewPanel, document: vscode.TextDocument) {
+    parseCsv(document.getText()).then((rows) => {
+      webviewPanel.webview.postMessage({
+        type: "init",
+        rows: rows
+      });
+    });
+  }
+
+  onDidReceiveMessage(message: Message) {
     switch (message.type) {
       case "copy":
         const copyMessage = message as CopyMessage;
@@ -116,5 +121,10 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         console.warn(`Unhandled message received from webview: ${message.type}`);
         return;
     }
+  }
+
+  onDidChangeViewState(event: vscode.WebviewPanelOnDidChangeViewStateEvent) {
+    const webviewPanel = event.webviewPanel;
+    webviewPanel.webview.html = this.buildHTMLForWebview(webviewPanel.webview);
   }
 }
