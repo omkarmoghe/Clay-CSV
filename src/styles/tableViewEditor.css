@@ -1,5 +1,11 @@
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  /* border-spacing: 0; */
+}
+
+thead {
+  position: sticky;
+  top: 0;
 }
 
 tbody {
@@ -8,8 +14,10 @@ tbody {
 
 th,
 td {
-  border: 1px dotted var(--vscode-editor-foreground);
   padding: 8px;
+  border: 1px dotted var(--vscode-editor-foreground);
+  color: var(--vscode-editor-foreground);
+  background-color: var(--vscode-editor-background);
 }
 
 th:hover,
