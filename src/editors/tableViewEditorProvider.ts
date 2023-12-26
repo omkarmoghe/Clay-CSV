@@ -32,11 +32,11 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     // Message listener (from the webview to the backend)
     const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.onDidReceiveMessage);
     // View state change listener
-    // const didChangeViewStateListener = webviewPanel.onDidChangeViewState(
-    //   (event: vscode.WebviewPanelOnDidChangeViewStateEvent) => {
-    //     this.onDidChangeViewState(event);
-    //   }
-    // );
+    const didChangeViewStateListener = webviewPanel.onDidChangeViewState(
+      (event: vscode.WebviewPanelOnDidChangeViewStateEvent) => {
+        this.initWebview(event.webviewPanel, document);
+      }
+    );
 
     webviewPanel.onDidDispose(
       () => { },
@@ -44,7 +44,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       [
         didChangeTextDocumentListener,
         didReceiveMessageListener,
-        // didChangeViewStateListener,
+        didChangeViewStateListener,
         ...this.context.subscriptions
       ]
     );
@@ -121,10 +121,5 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         console.warn(`Unhandled message received from webview: ${message.type}`);
         return;
     }
-  }
-
-  onDidChangeViewState(event: vscode.WebviewPanelOnDidChangeViewStateEvent) {
-    const webviewPanel = event.webviewPanel;
-    webviewPanel.webview.html = this.buildHTMLForWebview(webviewPanel.webview);
   }
 }
