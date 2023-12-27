@@ -35,6 +35,9 @@
         "selector": [
           {
             "filenamePattern": "*.csv"
+          },
+          {
+            "filenamePattern": "*.tsv"
           }
         ],
         "priority": "option"
