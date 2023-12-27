@@ -15,4 +15,4 @@ CSV tools for developers. This extension is still in preview; if you notice any 
 ![Click to copy screenshot](/images/features/click-to-copy.png)
 
 ### Sticky headers
-![Sticky headers screenshot](/images/features/sticky-headers.png)
+![Sticky headers screenshot](/images/features/sticky-headers.gif)
