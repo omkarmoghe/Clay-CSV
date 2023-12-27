@@ -6,6 +6,9 @@ CSV tools for developers.
 ### Simple table view of data
 ![Table view screenshot](/images/features/table-view.png)
 
+### Live updates
+![Live updates gif](/images/features/live-updates.gif)
+
 ### Click to copy
 ![Click to copy screenshot](/images/features/click-to-copy.png)
 
