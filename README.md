@@ -1,5 +1,5 @@
 # Clay CSV 📐
-CSV tools for developers.
+CSV tools for developers. This extension is still in preview; if you notice any bugs, [please open an issue](/issues/new).
 
 ## Features
 
