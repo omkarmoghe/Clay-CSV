@@ -7,12 +7,7 @@ export function nonce(): string {
 }
 
 export async function parseCsv(text: string): Promise<Row[]> {
-  const stringRows: string[][] = syncParse(
-    text,
-    // {
-    //   columns: true
-    // }
-  );
+  const stringRows: string[][] = syncParse(text);
 
   return stringRows.map((row: string[], row_index: number) => {
     const cells: Cell[] = row.map((cell, col) => ({ text: cell, row: row_index, col: col }));
@@ -30,15 +25,3 @@ export function debounce(fn: Function, ms: number = 300) {
     timeoutId = setTimeout(() => fn.apply(this, args), ms);
   };
 }
-// export function debounce(func: () => void, waitMilliseconds: number, runImmediately: boolean = false) {
-//   var timeout: number | null;
-//   return () => {
-//     const args = arguments;
-//     const funcLater = () => {
-//       timeout = null;
-//       if (!runImmediately) {
-//         func.apply(this, args);
-//       }
-//     };
-//   };
-// }
