@@ -3,6 +3,9 @@
 
 CSV tools for developers. This extension is still in preview; if you notice any bugs, [please open an issue](https://github.com/omkarmoghe/Clay-CSV/issues).
 
+## Installation
+Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=omkarmoghe.clay-csv).
+
 ## Features
 
 ### Simple table view of data
