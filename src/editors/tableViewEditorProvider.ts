@@ -30,26 +30,21 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       })
     );
     // Message listener (from the webview to the backend)
-    const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage(this.onDidReceiveMessage);
-    // View state change listener
-    const didChangeViewStateListener = webviewPanel.onDidChangeViewState(
-      (event: vscode.WebviewPanelOnDidChangeViewStateEvent) => {
-        this.initWebview(event.webviewPanel, document);
-      }
-    );
+    const didReceiveMessageListener = webviewPanel.webview.onDidReceiveMessage((message: Message) => {
+      this.onDidReceiveMessage(message, webviewPanel, document);
+    });
 
     webviewPanel.onDidDispose(
-      () => { },
+      () => {
+        debugger;
+      },
       null,
       [
         didChangeTextDocumentListener,
         didReceiveMessageListener,
-        didChangeViewStateListener,
         ...this.context.subscriptions
       ]
     );
-
-    this.initWebview(webviewPanel, document);
   }
 
   // Document change listener
@@ -108,7 +103,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     });
   }
 
-  onDidReceiveMessage(message: Message) {
+  onDidReceiveMessage(message: Message, webviewPanel: vscode.WebviewPanel, document: vscode.TextDocument) {
     switch (message.type) {
       case "copy":
         const copyMessage = message as CopyMessage;
@@ -116,6 +111,10 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         vscode.env.clipboard.writeText(copyMessage.text).then(() => {
           vscode.window.showInformationMessage(`"${copyMessage.text}" copied.`);
         });
+        return;
+      case "init":
+        console.debug("Webview requested initialization.");
+        this.initWebview(webviewPanel, document);
         return;
       default:
         console.warn(`Unhandled message received from webview: ${message.type}`);
