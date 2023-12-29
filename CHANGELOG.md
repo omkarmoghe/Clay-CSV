@@ -7,8 +7,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.1.2] - Unreleased
 ### Added
 - Selector for `.tsv` files
+- State management for the Webview
 ### Changed
 - Readme updates
+- Bumped Node from `21.0.0` -> `21.5.0`
+- Bumped dependencies
 
 ## [0.1.1] - 2023-12-26
 ### Changed
