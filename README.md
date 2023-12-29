@@ -9,13 +9,13 @@ Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items
 ## Features
 
 ### Simple table view of data
-![Table view screenshot](/images/features/table-view.png)
+![Table view screenshot](https://i.imgur.com/pV1SXWR.png)
 
 ### Live updates
-![Live updates gif](/images/features/live-updates.gif)
+![Live updates gif](https://i.imgur.com/1vP7m7N.gifv)
 
 ### Click to copy
-![Click to copy screenshot](/images/features/click-to-copy.png)
+![Click to copy screenshot](https://i.imgur.com/QdFM30R.png)
 
 ### Sticky headers
-![Sticky headers screenshot](/images/features/sticky-headers.gif)
+![Sticky headers screenshot](https://i.imgur.com/vG54zbA.gifv)
