@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
-import { debounce, nonce, parseCsv } from '../util';
+import { ParseOptions, debounce, nonce, parseCsv, rowUpdateRange } from '../util';
 import { CopyMessage, Message } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
   static readonly VIEW_TYPE: string = "clayCSV.tableView";
 
   context: vscode.ExtensionContext;
+  webviewPanel: vscode.WebviewPanel | null = null;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
@@ -26,7 +27,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     // Text document change listener
     const didChangeTextDocumentListener = vscode.workspace.onDidChangeTextDocument(
       debounce((event: vscode.TextDocumentChangeEvent) => {
-        this.onDidChangeTextDocument(document, event, webviewPanel);
+        this.onDidChangeTextDocument(document, event);
       })
     );
     // Message listener (from the webview to the backend)
@@ -45,20 +46,25 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         ...this.context.subscriptions
       ]
     );
+
+    this.webviewPanel = webviewPanel;
   }
 
   // Document change listener
   onDidChangeTextDocument(
     document: vscode.TextDocument,
-    event: vscode.TextDocumentChangeEvent,
-    webviewPanel: vscode.WebviewPanel
+    event: vscode.TextDocumentChangeEvent
   ): void {
+    if (!this.webviewPanel) { return; }
     if (event.document.uri.toString() !== document.uri.toString()) {
       return;
     }
+    if (!event.contentChanges || event.contentChanges.length <= 0) {
+      return;
+    }
 
-    // TODO(@omkarmoghe): Compute the minimum update and just send that to the webview.
-    this.initWebview(webviewPanel, document);
+    const [startRow, endRow] = rowUpdateRange(event.contentChanges);
+    this.updateWebview(document, startRow, endRow);
   }
 
   buildHTMLForWebview(webview: vscode.Webview): string {
@@ -94,11 +100,28 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 			</html>`;
   }
 
-  initWebview(webviewPanel: vscode.WebviewPanel, document: vscode.TextDocument) {
+  initWebview(document: vscode.TextDocument) {
+    if (!this.webviewPanel) { return; }
+
     parseCsv(document.getText()).then((rows) => {
-      webviewPanel.webview.postMessage({
+      this.webviewPanel!.webview.postMessage({
         type: "init",
-        rows: rows
+        rows
+      });
+    });
+  }
+
+  updateWebview(document: vscode.TextDocument, start: number, end: number) {
+    if (!this.webviewPanel) { return; }
+
+    const parseOptions: ParseOptions = {
+      from_line: start,
+      to_line: end
+    };
+    parseCsv(document.getText(), parseOptions).then((rows) => {
+      this.webviewPanel!.webview.postMessage({
+        type: "update",
+        rows
       });
     });
   }
@@ -114,7 +137,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
         return;
       case "init":
         console.debug("Webview requested initialization.");
-        this.initWebview(webviewPanel, document);
+        this.initWebview(document);
         return;
       default:
         console.warn(`Unhandled message received from webview: ${message.type}`);

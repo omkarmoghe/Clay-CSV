@@ -12,10 +12,10 @@ Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items
 ![Table view screenshot](https://i.imgur.com/pV1SXWR.png)
 
 ### Live updates
-![Live updates gif](https://i.imgur.com/1vP7m7N.gif)
+![Live updates gif](/images/features/live-updates.gif)
 
 ### Click to copy
 ![Click to copy screenshot](https://i.imgur.com/QdFM30R.png)
 
 ### Sticky headers
-![Sticky headers screenshot](https://i.imgur.com/vG54zbA.gif)
+![Sticky headers screenshot](/images/features/sticky-headers.gif)

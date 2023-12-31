@@ -1,18 +1,27 @@
 import * as crypto from "crypto";
 import { parse as syncParse } from 'csv-parse/sync';
 import { Cell, Row } from "./models/csv";
+import { TextDocumentContentChangeEvent } from "vscode";
 
 export function nonce(): string {
   return crypto.randomBytes(24).toString("base64");
 }
 
-export async function parseCsv(text: string): Promise<Row[]> {
-  const stringRows: string[][] = syncParse(text);
+export interface ParseOptions {
+  from_line: number;
+  to_line: number;
+}
 
-  return stringRows.map((row: string[], row_index: number) => {
-    const cells: Cell[] = row.map((cell, col) => ({ text: cell, row: row_index, col: col }));
+export async function parseCsv(text: string, options: ParseOptions | null = null): Promise<Row[]> {
+  const parseOptions = options || { from_line: 1, to_line: -1 };
+  const rowOffset = parseOptions.from_line - 1; // Adjusting for the 1-index that csv-parse uses.
+  const stringRows: string[][] = syncParse(text, parseOptions);
+
+  return stringRows.map((row: string[], rowIndex: number) => {
+    rowIndex += rowOffset;
+    const cells: Cell[] = row.map((cell, col) => ({ text: cell, row: rowIndex, col: col }));
     return {
-      index: row_index,
+      index: rowIndex,
       cells: cells
     };
   });
@@ -24,4 +33,20 @@ export function debounce(fn: Function, ms: number = 300) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), ms);
   };
+}
+
+export function rowUpdateRange(changes: readonly TextDocumentContentChangeEvent[]): number[] {
+  const changedRows: number[] = [];
+  changes.forEach((changeEvent) => {
+    changedRows.push(
+      changeEvent.range.start.line,
+      changeEvent.range.end.line
+    );
+  });
+
+  const start = Math.min(...changedRows);
+  const end = Math.max(...changedRows);
+
+  // csv-parse uses index 1 for the first row, not 0
+  return [start + 1, end + 1];
 }

@@ -4,12 +4,8 @@ export interface Message {
   type: string;
 }
 
-export interface InitMessage extends Message {
-  rows: Row[];
-}
-
 export interface UpdateMessage extends Message {
-  updates: Cell[];
+  rows: Row[];
 }
 
 export interface CopyMessage extends Message {

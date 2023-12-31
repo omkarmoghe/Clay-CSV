@@ -4,7 +4,11 @@ All notable changes to the "clay-csv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.1.2] - Unreleased
+## [0.1.3] - 2023-12-30
+### Changed
+- Improved update logic to only update changed rows & cells.
+
+## [0.1.2] - 2023-12-28
 ### Added
 - Selector for `.tsv` files
 - State management for the Webview
