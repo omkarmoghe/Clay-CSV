@@ -40,21 +40,6 @@ export async function parseCSV(document: TextDocument, options: ParseOptions | n
   });
 }
 
-// export async function parseCsv(document: TextDocument, options: ParseOptions | null = null): Promise<Row[]> {
-//   const parseOptions = options || { from_line: 1, to_line: document.lineCount };
-//   const rowOffset = parseOptions.from_line - 1; // Adjusting for the 1-index that csv-parse uses.
-//   const stringRows: string[][] = syncParse(document.getText(), parseOptions);
-
-// return stringRows.map((row: string[], rowIndex: number) => {
-//   rowIndex += rowOffset;
-//   const cells: Cell[] = row.map((cell, col) => ({ text: cell, row: rowIndex, col: col }));
-//   return {
-//     index: rowIndex,
-//     cells: cells
-//   };
-// });
-// }
-
 export function debounce(fn: Function, ms: number = 300) {
   let timeoutId: ReturnType<typeof setTimeout>;
   return function (this: any, ...args: any[]) {
