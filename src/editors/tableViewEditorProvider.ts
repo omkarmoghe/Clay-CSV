@@ -15,8 +15,10 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   resolveCustomTextEditor(
     document: vscode.TextDocument,
     webviewPanel: vscode.WebviewPanel,
-    _token: vscode.CancellationToken
+    token: vscode.CancellationToken
   ): void | Thenable<void> {
+    if (token.isCancellationRequested) { return; }
+
     // Enable JS
     webviewPanel.webview.options = {
       enableScripts: true
