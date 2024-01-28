@@ -7,15 +7,19 @@ CSV tools for developers. This extension is still in preview; if you notice any 
 Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=omkarmoghe.clay-csv).
 
 ## Features
-
-### Simple table view of data
-![Table view screenshot](https://i.imgur.com/pV1SXWR.png)
-
-### Live updates
-![Live updates gif](/images/features/live-updates.gif)
-
-### Click to copy
-![Click to copy screenshot](https://i.imgur.com/QdFM30R.png)
-
-### Sticky headers
-![Sticky headers screenshot](/images/features/sticky-headers.gif)
+<details>
+<summary>Simple table view of data</summary>
+<img src="https://i.imgur.com/pV1SXWR.png">
+</details>
+<details>
+<summary>Live updates</summary>
+<img src="images/features/live-updates.gif">
+</details>
+<details>
+<summary>Click to copy</summary>
+<img src="https://i.imgur.com/QdFM30R.png">
+</details>
+<details>
+<summary>Sticky headers</summary>
+<img src="images/features/sticky-headers.gif">
+</details>
