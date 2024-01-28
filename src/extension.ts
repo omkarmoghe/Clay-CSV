@@ -11,7 +11,12 @@ export function activate(context: vscode.ExtensionContext) {
   const tableViewEditorProvider = new TableViewEditorProvider(context);
   const tableViewEditorDisposable = vscode.window.registerCustomEditorProvider(
     TableViewEditorProvider.VIEW_TYPE,
-    tableViewEditorProvider
+    tableViewEditorProvider,
+    {
+      webviewOptions: {
+        enableFindWidget: true
+      }
+    }
   );
 
   context.subscriptions.push(tableViewEditorDisposable);
