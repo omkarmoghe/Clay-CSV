@@ -23,3 +23,7 @@ Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items
 <summary>Sticky headers</summary>
 <img src="images/features/sticky-headers.gif">
 </details>
+
+## TODO
+- [] Find widget
+  - can't seem to set `webviewPanel.options` from `CustomTextEditorProvider.resolveCustomTextEditor`
