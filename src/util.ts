@@ -12,7 +12,7 @@ export interface ParseOptions {
   end: number;
 }
 
-export function parseCSV(document: TextDocument, options: ParseOptions | null = null): Promise<Row[]> {
+export async function parseCSV(document: TextDocument, options: ParseOptions | null = null): Promise<Row[]> {
   options ||= { start: 0, end: document.lineCount };
 
   const skipLines = options.start;
