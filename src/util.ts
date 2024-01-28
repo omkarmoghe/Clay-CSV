@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import { parse as syncParse } from 'csv-parse/sync';
 import { Cell, Row } from "./models/csv";
-import { TextDocumentContentChangeEvent } from "vscode";
+import { TextDocument, TextDocumentContentChangeEvent } from "vscode";
 
 export function nonce(): string {
   return crypto.randomBytes(24).toString("base64");
@@ -12,10 +12,10 @@ export interface ParseOptions {
   to_line: number;
 }
 
-export async function parseCsv(text: string, options: ParseOptions | null = null): Promise<Row[]> {
-  const parseOptions = options || { from_line: 1, to_line: -1 };
+export async function parseCsv(document: TextDocument, options: ParseOptions | null = null): Promise<Row[]> {
+  const parseOptions = options || { from_line: 1, to_line: document.lineCount };
   const rowOffset = parseOptions.from_line - 1; // Adjusting for the 1-index that csv-parse uses.
-  const stringRows: string[][] = syncParse(text, parseOptions);
+  const stringRows: string[][] = syncParse(document.getText(), parseOptions);
 
   return stringRows.map((row: string[], rowIndex: number) => {
     rowIndex += rowOffset;

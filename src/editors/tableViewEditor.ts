@@ -58,7 +58,7 @@ function initTable(vscode: any, tableHeader: HTMLTableSectionElement, tableBody:
 
   rows.forEach((row) => {
     const tableRow = document.createElement("tr");
-    tableRow.id = `row-${row.index}`
+    tableRow.id = `row-${row.index}`;
     row.cells.forEach((cell) => {
       const tableCell = cell.row === 0 ? document.createElement("th") : document.createElement("td");
       tableCell.id = cellID(cell);

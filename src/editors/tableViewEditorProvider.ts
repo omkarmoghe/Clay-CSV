@@ -19,7 +19,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   ): void | Thenable<void> {
     // Enable JS
     webviewPanel.webview.options = {
-      enableScripts: true,
+      enableScripts: true
     };
 
     webviewPanel.webview.html = this.buildHTMLForWebview(webviewPanel.webview);
@@ -103,7 +103,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   initWebview(document: vscode.TextDocument) {
     if (!this.webviewPanel) { return; }
 
-    parseCsv(document.getText()).then((rows) => {
+    parseCsv(document).then((rows) => {
       this.webviewPanel!.webview.postMessage({
         type: "init",
         rows
@@ -118,7 +118,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       from_line: start,
       to_line: end
     };
-    parseCsv(document.getText(), parseOptions).then((rows) => {
+    parseCsv(document, parseOptions).then((rows) => {
       this.webviewPanel!.webview.postMessage({
         type: "update",
         rows

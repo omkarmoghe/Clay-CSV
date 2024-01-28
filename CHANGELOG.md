@@ -4,6 +4,12 @@ All notable changes to the "clay-csv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.4] - Unreleased
+### Changed
+- Bumped dependencies
+### Fixed
+- Init bug caused by default parse options
+
 ## [0.1.3] - 2023-12-30
 ### Changed
 - Improved update logic to only update changed rows & cells.
