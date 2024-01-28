@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ParseOptions, debounce, nonce, parseCsv, rowUpdateRange } from '../util';
+import { debounce, nonce, parseCSV, rowUpdateRange } from '../util';
 import { CopyMessage, Message } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
@@ -103,7 +103,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   initWebview(document: vscode.TextDocument) {
     if (!this.webviewPanel) { return; }
 
-    parseCsv(document).then((rows) => {
+    parseCSV(document).then((rows) => {
       this.webviewPanel!.webview.postMessage({
         type: "init",
         rows
@@ -114,11 +114,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
   updateWebview(document: vscode.TextDocument, start: number, end: number) {
     if (!this.webviewPanel) { return; }
 
-    const parseOptions: ParseOptions = {
-      from_line: start,
-      to_line: end
-    };
-    parseCsv(document, parseOptions).then((rows) => {
+    parseCSV(document, { start, end }).then((rows) => {
       this.webviewPanel!.webview.postMessage({
         type: "update",
         rows
