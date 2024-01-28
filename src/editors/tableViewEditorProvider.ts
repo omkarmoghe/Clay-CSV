@@ -36,9 +36,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     });
 
     webviewPanel.onDidDispose(
-      () => {
-        debugger;
-      },
+      () => { },
       null,
       [
         didChangeTextDocumentListener,
@@ -69,7 +67,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
 
   buildHTMLForWebview(webview: vscode.Webview): string {
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "out", "editors", "tableViewEditor.js")
+      vscode.Uri.joinPath(this.context.extensionUri, "out", "editors", "TableViewEditor.js")
     );
     const styleUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "src", "styles", "tableViewEditor.css")
