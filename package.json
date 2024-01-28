@@ -2,7 +2,7 @@
   "name": "clay-csv",
   "displayName": "Clay CSV",
   "description": "CSV tools for developers.",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "preview": true,
   "engines": {
     "vscode": "^1.84.0"
