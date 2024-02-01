@@ -7,6 +7,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.2.0] - Unreleased
 ### Changed
 - Migrated from `node-csv` -> `fast-csv`
+### Fixed
+- Many bugs/edge cases with row updates
 
 ## [0.1.4] - 2024-01-27
 ### Added

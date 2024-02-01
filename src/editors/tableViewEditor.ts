@@ -26,14 +26,6 @@ export default function tableViewEditor() {
         }
 
         return;
-      case "update":
-        const updateMessage = message as UpdateMessage;
-
-        if (tableContainer && table) {
-          updateTable(tableHeader, tableBody, updateMessage.rows);
-        }
-
-        return;
       default:
         return;
     }
@@ -48,15 +40,12 @@ export default function tableViewEditor() {
 }
 
 function initTable(vscode: any, tableHeader: HTMLTableSectionElement, tableBody: HTMLTableSectionElement, rows: Row[]) {
-  if (tableHeader) {
-    tableHeader.replaceChildren();
-  }
-
-  if (tableBody) {
-    tableBody.replaceChildren();
-  }
+  const header: HTMLTableRowElement[] = [];
+  const body: HTMLTableRowElement[] = [];
 
   rows.forEach((row) => {
+    if (row.cells.length <= 0) { return; }
+
     const tableRow = document.createElement("tr");
     tableRow.id = `row-${row.index}`;
     row.cells.forEach((cell) => {
@@ -67,28 +56,13 @@ function initTable(vscode: any, tableHeader: HTMLTableSectionElement, tableBody:
       tableRow.appendChild(tableCell);
     });
 
-
-    row.index === 0 ? tableHeader.appendChild(tableRow) : tableBody.appendChild(tableRow);
+    row.index === 0 ? header.push(tableRow) : body.push(tableRow);
   });
+
+  tableHeader.replaceChildren(...header);
+  tableBody.replaceChildren(...body);
 
   vscode.setState({ rows });
-}
-
-function updateTable(tableHeader: HTMLTableSectionElement, tableBody: HTMLTableSectionElement, rows: Row[]) {
-  rows.forEach((row) => {
-    row.cells.forEach((cell) => {
-      let tableCell: HTMLTableCellElement;
-      if (row.index === 0) {
-        tableCell = tableHeader.querySelector(`#${cellID(cell)}`) as HTMLTableCellElement;
-      } else {
-        tableCell = tableBody.querySelector(`#${cellID(cell)}`) as HTMLTableCellElement;
-      }
-
-      tableCell.textContent = cell.text;
-    });
-  });
-
-  // TODO(@omkarmoghe): Update state with the new rows.
 }
 
 function onCellClick(event: MouseEvent, vscode: any) {

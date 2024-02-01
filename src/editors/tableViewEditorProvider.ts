@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { debounce, nonce, parseCSV, rowUpdateRange } from '../util';
+import { debounce, nonce, parseCSV } from '../util';
 import { CopyMessage, Message } from '../models/messages';
 
 export class TableViewEditorProvider implements vscode.CustomTextEditorProvider {
@@ -63,8 +63,9 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       return;
     }
 
-    const [startRow, endRow] = rowUpdateRange(event.contentChanges);
-    this.updateWebview(document, startRow, endRow);
+    // TODO(@omkarmoghe): There are a lot of edge cases around updating just the rows that were changed, specifically
+    // when deleting or inserting new rows. It's much easier for now to just update the whole webview.
+    this.initWebview(document);
   }
 
   buildHTMLForWebview(webview: vscode.Webview): string {
@@ -106,17 +107,6 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
     parseCSV(document).then((rows) => {
       this.webviewPanel!.webview.postMessage({
         type: "init",
-        rows
-      });
-    });
-  }
-
-  updateWebview(document: vscode.TextDocument, start: number, end: number) {
-    if (!this.webviewPanel) { return; }
-
-    parseCSV(document, { start, end }).then((rows) => {
-      this.webviewPanel!.webview.postMessage({
-        type: "update",
         rows
       });
     });
