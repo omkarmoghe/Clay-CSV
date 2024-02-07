@@ -2,7 +2,7 @@
   "name": "clay-csv",
   "displayName": "Clay CSV",
   "description": "CSV tools for developers.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "preview": true,
   "engines": {
     "vscode": "^1.84.0"
@@ -60,9 +60,11 @@
     "@typescript-eslint/parser": "^6.9.0",
     "@vscode/test-electron": "^2.3.6",
     "eslint": "^8.52.0",
-    "@fast-csv/parse": "^5.0",
     "glob": "^10.3.10",
     "mocha": "^10.2.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@fast-csv/parse": "^5.0"
   }
 }

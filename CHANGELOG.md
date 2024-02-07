@@ -4,7 +4,11 @@ All notable changes to the "clay-csv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.2.0] - Unreleased
+## [0.2.1] - 2024-02-06
+### Fixed
+- `fast-csv` packaging dependency issue
+
+## [0.2.0] - 2024-01-31
 ### Changed
 - Migrated from `node-csv` -> `fast-csv`
 ### Fixed
