@@ -73,7 +73,7 @@ export class TableViewEditorProvider implements vscode.CustomTextEditorProvider 
       vscode.Uri.joinPath(this.context.extensionUri, "out", "editors", "TableViewEditor.js")
     );
     const styleUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "src", "styles", "tableViewEditor.css")
+      vscode.Uri.joinPath(this.context.extensionUri, "out", "styles", "tableViewEditor.css")
     );
     const scriptNonce = nonce();
 

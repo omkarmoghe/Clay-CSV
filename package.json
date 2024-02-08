@@ -2,7 +2,7 @@
   "name": "clay-csv",
   "displayName": "Clay CSV",
   "description": "CSV tools for developers.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "preview": true,
   "engines": {
     "vscode": "^1.84.0"
@@ -46,7 +46,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && cp -R src/styles out/styles",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",

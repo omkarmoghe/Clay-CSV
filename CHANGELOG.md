@@ -4,6 +4,11 @@ All notable changes to the "clay-csv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.2] - 2024-02-07
+### Fixed
+- Fixed extension size by ignoring feature images from the packaged extension.
+- Fixed CSS issues in the packaged extension.
+
 ## [0.2.1] - 2024-02-06
 ### Fixed
 - `fast-csv` packaging dependency issue
