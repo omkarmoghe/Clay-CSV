@@ -8,7 +8,7 @@ Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items
 
 ## Features
 <details>
-<summary>Simple table view of data</summary>
+<summary>Table view of data</summary>
 <img src="https://i.imgur.com/pV1SXWR.png">
 </details>
 <details>
