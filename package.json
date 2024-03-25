@@ -62,7 +62,7 @@
     "eslint": "^8.52.0",
     "glob": "^10.3.10",
     "mocha": "^10.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "@fast-csv/parse": "^5.0"
